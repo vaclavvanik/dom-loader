@@ -16,5 +16,6 @@
     <file>../../src</file>
     <file>../../test</file>
 
+    <rule ref="VaclavVanik"/>
     <rule ref="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion"/>
 </ruleset>

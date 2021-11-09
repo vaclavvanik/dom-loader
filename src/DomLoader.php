@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VaclavVanik\DomLoader;
 
 use DOMDocument;
-
 use ErrorException;
 
 use function error_reporting;
@@ -18,8 +17,8 @@ use function set_error_handler;
 abstract class DomLoader
 {
     /**
-     * @throws Exception\LibXml if xml string parsing failed
-     * @throws Exception\ValueError if source (xml string) is empty
+     * @throws Exception\LibXml if xml string parsing failed.
+     * @throws Exception\ValueError if source (xml string) is empty.
      */
     public static function loadString(string $source, int $options = 0, ?DOMDocument $doc = null): DOMDocument
     {
@@ -41,11 +40,11 @@ abstract class DomLoader
     }
 
     /**
-     * @throws Exception\LibXml if xml file parsing failed
-     * @throws Exception\Runtime if error occurs when reading file
-     * @throws Exception\ValueError if filename is empty
+     * @throws Exception\LibXml if xml file parsing failed.
+     * @throws Exception\Runtime if error occurs when reading file.
+     * @throws Exception\ValueError if filename is empty.
      */
-    public static function loadFile(string $filename, int $options = 0, ?DOMDocument $doc = null) : DOMDocument
+    public static function loadFile(string $filename, int $options = 0, ?DOMDocument $doc = null): DOMDocument
     {
         if ($filename === '') {
             throw new Exception\ValueError('Argument #1 ($filename) must not be empty');
@@ -56,8 +55,8 @@ abstract class DomLoader
         $previousInternalErrors = libxml_use_internal_errors(true);
 
         try {
-            $errorHandler = static function(int $no, string $str, string $file = '', int $line = 0): bool {
-                if (!(error_reporting() & $no)) {
+            $errorHandler = static function (int $no, string $str, string $file = '', int $line = 0): bool {
+                if (! (error_reporting() & $no)) {
                     return false;
                 }
 
@@ -77,7 +76,7 @@ abstract class DomLoader
         }
     }
 
-    private static function createDoc(?DOMDocument $doc) : DOMDocument
+    private static function createDoc(?DOMDocument $doc): DOMDocument
     {
         if ($doc === null) {
             return new DOMDocument('1.0', 'utf-8');
@@ -86,12 +85,18 @@ abstract class DomLoader
         return $doc;
     }
 
-    /** @throws Exception\LibXml */
-    private static function assertLoadResult(/* bool|DOMDocument */ $result) : void
+    /**
+     * @param bool|DOMDocument $result
+     *
+     * @throws Exception\LibXml
+     */
+    private static function assertLoadResult(/* bool|DOMDocument */ $result): void
     {
-        if ($result === false) {
-            self::throwException();
+        if ($result !== false) {
+            return;
         }
+
+        self::throwException();
     }
 
     /** @throws Exception\LibXml */

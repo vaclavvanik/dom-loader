@@ -13,6 +13,7 @@ use VaclavVanik\DomLoader\Exception\ValueError;
 
 final class DomLoaderTest extends TestCase
 {
+    /** @return iterable<string, array{string, int, (DOMDocument|null), string}> */
     public function provideLoadString(): iterable
     {
         $xml = '<root/>';
@@ -34,21 +35,21 @@ final class DomLoaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideLoadString
-     */
+    /** @dataProvider provideLoadString */
     public function testLoadString(string $string, int $options, ?DOMDocument $inDoc, string $xml): void
     {
         $doc = DomLoader::loadString($string, $options, $inDoc);
 
         $this->assertSame($xml, $doc->saveXML());
 
-        if ($inDoc) {
-            $this->assertSame($inDoc, $doc);
+        if (! $inDoc) {
+            return;
         }
+
+        $this->assertSame($inDoc, $doc);
     }
 
-    public function testLoadStringEmptyXml() : void
+    public function testLoadStringEmptyXml(): void
     {
         $this->expectException(ValueError::class);
         $this->expectErrorMessage('Argument #1 ($source) must not be empty');
@@ -56,7 +57,7 @@ final class DomLoaderTest extends TestCase
         DomLoader::loadString('');
     }
 
-    public function testLoadStringInvalidXml() : void
+    public function testLoadStringInvalidXml(): void
     {
         $this->expectException(LibXml::class);
         $this->expectErrorMessage('Extra content at the end of the document on line: 1, column: 2');
@@ -64,6 +65,7 @@ final class DomLoaderTest extends TestCase
         DomLoader::loadString('<>');
     }
 
+    /** @return iterable<string, array{string, int, (DOMDocument|null), string}> */
     public function provideLoadFile(): iterable
     {
         $file = __DIR__ . '/_files/root.xml';
@@ -85,21 +87,21 @@ final class DomLoaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideLoadFile
-     */
+    /** @dataProvider provideLoadFile */
     public function testLoadFile(string $file, int $options, ?DOMDocument $inDoc, string $xml): void
     {
         $doc = DomLoader::loadFile($file, $options, $inDoc);
 
         $this->assertSame($xml, $doc->saveXML());
 
-        if ($inDoc) {
-            $this->assertSame($inDoc, $doc);
+        if (! $inDoc) {
+            return;
         }
+
+        $this->assertSame($inDoc, $doc);
     }
 
-    public function testLoadFileEmptyFile() : void
+    public function testLoadFileEmptyFile(): void
     {
         $this->expectException(ValueError::class);
         $this->expectErrorMessage('Argument #1 ($filename) must not be empty');
@@ -107,7 +109,7 @@ final class DomLoaderTest extends TestCase
         DomLoader::loadFile('');
     }
 
-    public function testLoadFileContainsInvalidXml() : void
+    public function testLoadFileContainsInvalidXml(): void
     {
         $this->expectException(LibXml::class);
         $this->expectErrorMessage('Extra content at the end of the document on line: 1, column: 2');
@@ -115,7 +117,7 @@ final class DomLoaderTest extends TestCase
         DomLoader::loadFile(__DIR__ . '/_files/invalid.xml');
     }
 
-    public function testLoadFileEmptyContent() : void
+    public function testLoadFileEmptyContent(): void
     {
         $this->expectException(LibXml::class);
         $this->expectErrorMessage('Document is empty on line: 1, column: 1');
@@ -123,7 +125,7 @@ final class DomLoaderTest extends TestCase
         DomLoader::loadFile(__DIR__ . '/_files/empty.xml');
     }
 
-    public function testLoadFileNotFile() : void
+    public function testLoadFileNotFile(): void
     {
         $this->expectException(Runtime::class);
         $this->expectErrorMessageMatches('/DOMDocument::load/');

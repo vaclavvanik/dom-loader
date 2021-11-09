@@ -9,7 +9,7 @@ use Throwable;
 
 final class Runtime extends RuntimeException implements Exception
 {
-    public static function fromThrowable(Throwable $e) : self
+    public static function fromThrowable(Throwable $e): self
     {
         return new self($e->getMessage(), $e->getCode(), $e);
     }

@@ -12,9 +12,7 @@ use function trim;
 
 final class LibXml extends RuntimeException implements Exception
 {
-    /**
-     * @var LibXMLError
-     */
+    /** @var LibXMLError */
     private $libXmlError;
 
     private function __construct(LibXMLError $libXmlError, string $message)
@@ -24,12 +22,7 @@ final class LibXml extends RuntimeException implements Exception
         parent::__construct($message);
     }
 
-    public function getLibXmlError() : LibXMLError
-    {
-        return $this->libXmlError;
-    }
-
-    public static function fromLibXMLError(LibXMLError $error) : self
+    public static function fromLibXMLError(LibXMLError $error): self
     {
         $toErrorMessage = static function (LibXMLError $error): string {
             $format = '%s on line: %d, column: %d';
@@ -38,5 +31,10 @@ final class LibXml extends RuntimeException implements Exception
         };
 
         return new self($error, $toErrorMessage($error));
+    }
+
+    public function getLibXmlError(): LibXMLError
+    {
+        return $this->libXmlError;
     }
 }

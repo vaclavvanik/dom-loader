@@ -9,7 +9,7 @@ use Throwable;
 
 final class ValueError extends Error implements Exception
 {
-    public static function fromError(Throwable $error) : self
+    public static function fromError(Throwable $error): self
     {
         return new self($error->getMessage(), $error->getCode(), $error);
     }
