@@ -55,6 +55,14 @@ $dom = DomLoader\DomLoader::loadFile($file, 0, new DOMDocument('1.0', 'utf-8'));
 $dom = DomLoader\DomLoader::loadString($string, 0, new DOMDocument('1.0', 'utf-8'));
 ```
 
+## Exceptions
+
+load method throws:
+
+- Exception\LibXml if xml file parsing failed.
+- Exception\Runtime if error occurs when reading file.
+- Exception\ValueError if filename or xml string is empty.
+
 ## Run check - coding standards and php-unit
 
 ```bash
