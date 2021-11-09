@@ -1,0 +1,8 @@
+{
+  "require": {
+    "php": "^7.3 || ^8.0",
+    "ext-dom": "*",
+    "ext-libxml": "*",
+    "phpunit/phpunit": "^9.5"
+  }
+}
