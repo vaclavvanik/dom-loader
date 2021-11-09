@@ -10,11 +10,9 @@ install-unit-test-dependencies:
 install: install-root-dependencies install-coding-standard-dependencies install-unit-test-dependencies
 
 coding-standard-fix:
-	./tools/php-coding-standard/vendor/bin/phpcbf --config-set php_version 70300
 	./tools/php-coding-standard/vendor/bin/phpcbf --basepath=. --standard=tools/php-coding-standard/.phpcs.xml
 
 coding-standard-check:
-	./tools/php-coding-standard/vendor/bin/phpcs --config-set php_version 70300
 	./tools/php-coding-standard/vendor/bin/phpcs --basepath=. --standard=tools/php-coding-standard/.phpcs.xml
 
 unit-test:
