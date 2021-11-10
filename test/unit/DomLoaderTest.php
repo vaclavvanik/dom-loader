@@ -13,7 +13,7 @@ use VaclavVanik\DomLoader\Exception\ValueError;
 
 final class DomLoaderTest extends TestCase
 {
-    /** @return iterable<string, array{string, int, (DOMDocument|null), string}> */
+    /** @return iterable<string, array{string, int, DOMDocument|null, string}> */
     public function provideLoadString(): iterable
     {
         $xml = '<root/>';
@@ -65,7 +65,7 @@ final class DomLoaderTest extends TestCase
         DomLoader::loadString('<>');
     }
 
-    /** @return iterable<string, array{string, int, (DOMDocument|null), string}> */
+    /** @return iterable<string, array{string, int, DOMDocument|null, string}> */
     public function provideLoadFile(): iterable
     {
         $file = __DIR__ . '/_files/root.xml';
