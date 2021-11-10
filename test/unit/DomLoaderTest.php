@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VaclavVanikTest\DomLoader\Exception;
+namespace VaclavVanikTest\DomLoader;
 
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
