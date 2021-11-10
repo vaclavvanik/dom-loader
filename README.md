@@ -40,7 +40,7 @@ $dom = DomLoader\DomLoader::loadFile($file, LIBXML_PARSEHUGE);
 $dom = DomLoader\DomLoader::loadString($string, LIBXML_PARSEHUGE);
 ```
 
-and finally loading to custom DOMDocument is supported:
+and finally loading into custom DOMDocument is supported:
 
 ```php
 <?php
@@ -57,11 +57,11 @@ $dom = DomLoader\DomLoader::loadString($string, 0, new DOMDocument('1.0', 'utf-8
 
 ## Exceptions
 
-load method throws:
+load methods throw:
 
-- Exception\LibXml if xml file parsing failed.
-- Exception\Runtime if error occurs when reading file.
-- Exception\ValueError if filename or xml string is empty.
+- [Exception\LibXml](src/Exception/LibXml.php) if xml file parsing failed.
+- [Exception\Runtime](src/Exception/Runtime.php) if error occurs when reading file.
+- [Exception\ValueError](src/Exception/ValueError.php) if filename or xml string is empty.
 
 ## Run check - coding standards and php-unit
 
