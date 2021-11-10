@@ -55,15 +55,7 @@ abstract class DomLoader
         $previousInternalErrors = libxml_use_internal_errors(true);
 
         try {
-            $errorHandler = static function (int $no, string $str, string $file = '', int $line = 0): bool {
-                if (! (error_reporting() & $no)) {
-                    return false;
-                }
-
-                throw new ErrorException($str, 0, $no, $file, $line);
-            };
-
-            set_error_handler($errorHandler);
+            set_error_handler([self::class, 'errorHandler']);
 
             self::assertLoadResult($doc->load($filename, $options));
         } catch (ErrorException $e) {
@@ -106,5 +98,15 @@ abstract class DomLoader
         libxml_clear_errors();
 
         throw Exception\LibXml::fromLibXMLError($libXmlError);
+    }
+
+    /** @throws ErrorException */
+    private static function errorHandler(int $no, string $str, string $file, int $line): bool
+    {
+        if (! (error_reporting() & $no)) {
+            return false;
+        }
+
+        throw new ErrorException($str, 0, $no, $file, $line);
     }
 }
