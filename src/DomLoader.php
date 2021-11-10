@@ -32,11 +32,11 @@ abstract class DomLoader
 
         try {
             self::assertLoadResult($doc->loadXML($source, $options));
-
-            return $doc;
         } finally {
             libxml_use_internal_errors($previousInternalErrors);
         }
+
+        return $doc;
     }
 
     /**
@@ -66,14 +66,14 @@ abstract class DomLoader
             set_error_handler($errorHandler);
 
             self::assertLoadResult($doc->load($filename, $options));
-
-            return $doc;
         } catch (ErrorException $e) {
             throw Exception\Runtime::fromThrowable($e);
         } finally {
             libxml_use_internal_errors($previousInternalErrors);
             restore_error_handler();
         }
+
+        return $doc;
     }
 
     private static function createDoc(?DOMDocument $doc): DOMDocument
