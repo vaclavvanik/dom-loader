@@ -65,6 +65,14 @@ load method throws:
 
 ## Run check - coding standards and php-unit
 
+Install dependencies:
+
+```bash
+make install
+```
+
+Run check:
+
 ```bash
 make check
 ```
