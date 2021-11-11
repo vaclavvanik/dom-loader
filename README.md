@@ -1,4 +1,4 @@
-# Dom-loader
+# DomLoader
 
 This package provides a safety way to load string or file to [DOMDocument](https://www.php.net/manual/en/class.domdocument.php).
 
