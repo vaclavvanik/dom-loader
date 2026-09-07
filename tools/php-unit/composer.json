@@ -3,6 +3,6 @@
     "php": "^7.3 || ^8.0",
     "ext-dom": "*",
     "ext-libxml": "*",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.6 || ^10.5 || ^11.5"
   }
 }

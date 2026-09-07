@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace VaclavVanik\DomLoader;
 
 use DOMDocument;
-use ErrorException;
+use LibXMLError;
 
-use function error_reporting;
+use function is_file;
 use function libxml_clear_errors;
 use function libxml_get_last_error;
 use function libxml_use_internal_errors;
 use function restore_error_handler;
 use function set_error_handler;
+use function sprintf;
+use function strpos;
+
+use const LIBXML_ERR_FATAL;
 
 abstract class DomLoader
 {
@@ -28,12 +32,14 @@ abstract class DomLoader
 
         $doc = self::createDoc($doc);
 
+        libxml_clear_errors();
         $previousInternalErrors = libxml_use_internal_errors(true);
 
         try {
             self::assertLoadResult($doc->loadXML($source, $options));
         } finally {
             libxml_use_internal_errors($previousInternalErrors);
+            libxml_clear_errors();
         }
 
         return $doc;
@@ -50,18 +56,41 @@ abstract class DomLoader
             throw new Exception\ValueError('Argument #1 ($filename) must not be empty');
         }
 
+        // Local paths only; leave stream wrappers (http://, php://, …) for DOMDocument to resolve.
+        // BC shim for PHP < 8.0: use str_contains($filename, '://') once the minimum is >= 8.0.
+        if (strpos($filename, '://') === false && ! is_file($filename)) {
+            throw new Exception\Runtime(sprintf('File "%s" does not exist or is not a regular file', $filename));
+        }
+
         $doc = self::createDoc($doc);
 
+        libxml_clear_errors();
         $previousInternalErrors = libxml_use_internal_errors(true);
 
-        try {
-            set_error_handler([self::class, 'errorHandler']);
+        // Capture the file-access diagnostic (failed to open stream, read error, open_basedir …)
+        // instead of throwing from the handler, so a benign notice on an otherwise successful
+        // load cannot turn into an exception.
+        $readError = '';
 
-            self::assertLoadResult($doc->load($filename, $options));
-        } catch (ErrorException $e) {
-            throw Exception\Runtime::fromThrowable($e);
+        try {
+            set_error_handler(static function (int $no, string $message) use (&$readError): bool {
+                if ($readError === '') {
+                    $readError = $message;
+                }
+
+                return true;
+            });
+
+            if ($doc->load($filename, $options) === false) {
+                if ($readError !== '') {
+                    throw new Exception\Runtime($readError);
+                }
+
+                self::throwException();
+            }
         } finally {
             libxml_use_internal_errors($previousInternalErrors);
+            libxml_clear_errors();
             restore_error_handler();
         }
 
@@ -97,16 +126,17 @@ abstract class DomLoader
         $libXmlError = libxml_get_last_error();
         libxml_clear_errors();
 
-        throw Exception\LibXml::fromLibXMLError($libXmlError);
-    }
-
-    /** @throws ErrorException */
-    private static function errorHandler(int $no, string $str, string $file, int $line): bool
-    {
-        if (! (error_reporting() & $no)) {
-            return false;
+        if ($libXmlError === false) {
+            // libxml signalled failure without recording an error - should not happen in practice.
+            $libXmlError = new LibXMLError();
+            $libXmlError->level = LIBXML_ERR_FATAL;
+            $libXmlError->code = 0;
+            $libXmlError->column = 0;
+            $libXmlError->message = 'Unknown libxml error';
+            $libXmlError->file = '';
+            $libXmlError->line = 0;
         }
 
-        throw new ErrorException($str, 0, $no, $file, $line);
+        throw Exception\LibXml::fromLibXMLError($libXmlError);
     }
 }
