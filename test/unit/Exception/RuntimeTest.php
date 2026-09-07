@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace VaclavVanikTest\DomLoader\Exception;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use VaclavVanik\DomLoader\Exception\Exception;
 use VaclavVanik\DomLoader\Exception\Runtime;
 
 final class RuntimeTest extends TestCase
 {
-    public function testFromThrowable(): void
+    public function testIsRuntimeExceptionAndPackageException(): void
     {
-        $throwable = new Exception('Error message');
+        $exception = new Runtime('message');
 
-        $runtime = Runtime::fromThrowable($throwable);
-
-        $this->assertSame($throwable->getMessage(), $runtime->getMessage());
-        $this->assertSame($throwable->getCode(), $runtime->getCode());
-        $this->assertSame($throwable, $runtime->getPrevious());
+        $this->assertInstanceOf(RuntimeException::class, $exception);
+        $this->assertInstanceOf(Exception::class, $exception);
     }
 }
