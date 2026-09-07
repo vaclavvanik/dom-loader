@@ -1,5 +1,10 @@
 # DomLoader
 
+[![CI](https://github.com/vaclavvanik/dom-loader/actions/workflows/ci.yml/badge.svg)](https://github.com/vaclavvanik/dom-loader/actions/workflows/ci.yml)
+[![Latest Stable Version](https://img.shields.io/packagist/v/vaclavvanik/dom-loader)](https://packagist.org/packages/vaclavvanik/dom-loader)
+[![Total Downloads](https://img.shields.io/packagist/dt/vaclavvanik/dom-loader)](https://packagist.org/packages/vaclavvanik/dom-loader)
+[![License](https://img.shields.io/packagist/l/vaclavvanik/dom-loader)](LICENSE.md)
+
 Load an XML string or file into a [DOMDocument](https://www.php.net/manual/en/class.domdocument.php)
 and get back either a valid document or a typed exception — never a half-parsed document or a silent `false`.
 
