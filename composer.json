@@ -23,9 +23,6 @@
     "ext-dom": "*",
     "ext-libxml": "*"
   },
-  "require-dev": {
-
-  },
   "autoload": {
     "psr-4": {
       "VaclavVanik\\DomLoader\\": "src/"
