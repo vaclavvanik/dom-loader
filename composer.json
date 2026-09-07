@@ -1,6 +1,6 @@
 {
   "name": "vaclavvanik/dom-loader",
-  "description": "Load DOM document safety",
+  "description": "Safely load an XML string or file into a DOMDocument",
   "license": "MIT",
   "type": "library",
   "homepage": "https://github.com/vaclavvanik/dom-loader",
