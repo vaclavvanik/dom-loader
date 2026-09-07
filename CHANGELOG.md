@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.1.1 - 2026-09-07
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- CI: declare `config.allow-plugins` for the coding-standard tooling so `composer` no longer aborts.
+
 ## 1.1.0 - 2026-09-07
 
 ### Added
